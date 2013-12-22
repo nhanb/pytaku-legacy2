@@ -7,4 +7,5 @@ before_script:
 script: python tests/full.py
 notifications:
   hipchat:
-    secure: "Hxf0Y4Vn5/+RZcVS7q36SoxVby21HitylFGaSviDHgEdG4HPHQZW6ZTa7MtiYDExJGe2gk9YGiwmpcY/zV6wqp+YTiSk9T6uIE8WicDz2eah30YhR6/6yzKF8yvSmRW6GjDunPPBAixxmhg4JI+IhVoevukzcckpm+1rvW7zytk="
+    rooms:
+      secure: pJg9fkOYl9ljasQb1vMcYU2YtjfAKMsT2dcsYptF2pwkqhW4674HSkD/0JSXQnLdrSc95lxV/3UfFWXP1a7wp5s3Vq6S6gOv1yKoLrjV2xll+bCxK2DeGBfxutvv3ZoB4w/Up1RrcXHxqjfOdhI3im0vee/N31PFnSgDuRvIWPI=
