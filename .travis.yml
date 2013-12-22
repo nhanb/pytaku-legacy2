@@ -8,4 +8,4 @@ script: python tests/full.py
 notifications:
   hipchat:
     rooms:
-      secure: pJg9fkOYl9ljasQb1vMcYU2YtjfAKMsT2dcsYptF2pwkqhW4674HSkD/0JSXQnLdrSc95lxV/3UfFWXP1a7wp5s3Vq6S6gOv1yKoLrjV2xll+bCxK2DeGBfxutvv3ZoB4w/Up1RrcXHxqjfOdhI3im0vee/N31PFnSgDuRvIWPI=
+      secure: nUr1k5BuYaB47gPQbMMoxhz+wJr7K5WwC+6DnecM3+CmXn6E5iaXCYjfEFM5HTgM3WWlexBmOUaiTQL/JGAdEGDy7aAhzobCdSASRYBqHUya17OEHrDy6BRpnz26fd0FU6UhvpzVwgGMy8T7Uh6iRLpfzdSG0TkkdjDHNq6kwMM=
