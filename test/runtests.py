@@ -2,8 +2,8 @@
 import optparse
 import sys
 import os
-# Install the Python unittest2 package before you run this script.
-import unittest2
+# Install the Python unittest package before you run this script.
+import unittest
 
 USAGE = """%prog SDK_PATH TEST_PATH
 Run unit tests for App Engine apps.
@@ -21,17 +21,18 @@ def main(sdk_path, test_path):
     test_path = os.path.dirname(__file__)
     sys.path.append(os.path.dirname(test_path))
 
-    suite = unittest2.loader.TestLoader().discover(test_path)
-    unittest2.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.loader.TestLoader().discover(test_path)
+    unittest.TextTestRunner(verbosity=2).run(suite)
 
 
 if __name__ == '__main__':
     parser = optparse.OptionParser(USAGE)
     options, args = parser.parse_args()
-    if len(args) != 2:
-        print 'Error: Exactly 2 arguments required.'
-        parser.print_help()
-        sys.exit(1)
-    SDK_PATH = args[0]
-    TEST_PATH = args[1]
+    #if len(args) != 2:
+        #print 'Error: Exactly 2 arguments required.'
+        #parser.print_help()
+        #sys.exit(1)
+
+    SDK_PATH = os.environ.get('GAE_PATH', os.path.expanduser('~'))
+    TEST_PATH = os.path.dirname(__file__)
     main(SDK_PATH, TEST_PATH)
