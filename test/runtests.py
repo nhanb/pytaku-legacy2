@@ -8,12 +8,13 @@ if __name__ == '__main__':
 
     # Add project root to PATH
     test_path = os.path.dirname(__file__)
-    sys.path.append(os.path.dirname(test_path))
+    proj_path = os.path.dirname(test_path)
+    sys.path.append(proj_path)
 
     # Add SDK path to, well, PATH
     sdk_path = os.environ.get(
         'GAE_PATH',  # read environment variable if available
-        os.path.dirname(test_path)  # travis default gae path
+        proj_path + '/google_appengine'  # gae path on travis
     )
     sys.path.insert(0, sdk_path)
     import dev_appserver
