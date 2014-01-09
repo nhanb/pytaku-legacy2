@@ -33,6 +33,7 @@ if __name__ == '__main__':
         #parser.print_help()
         #sys.exit(1)
 
-    SDK_PATH = os.environ.get('GAE_PATH', os.path.expanduser('~'))
+    SDK_PATH = os.environ.get('GAE_PATH',
+                              os.path.expanduser('~/google_appengine'))
     TEST_PATH = os.path.dirname(__file__)
     main(SDK_PATH, TEST_PATH)
