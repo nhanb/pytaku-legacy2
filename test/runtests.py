@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # Add SDK path to, well, PATH
     sdk_path = os.environ.get(
         'GAE_PATH',  # read environment variable if available
-        proj_path + '/google_appengine'  # gae path on travis
+        os.environ.get('HOME') + '/google_appengine'  # gae path on travis
     )
     sys.path.insert(0, sdk_path)
     import dev_appserver
