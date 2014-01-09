@@ -1,4 +1,4 @@
-from url import urlparse
+import urlparse
 from sites import get_html
 import re
 

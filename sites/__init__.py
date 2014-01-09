@@ -1,4 +1,4 @@
-from url import urlparse
+import urlparse
 from google.appengine.api import urlfetch
 
 
@@ -7,7 +7,7 @@ def get_site(url):
     parsed = urlparse.urlparse(url)
     if parsed.netloc == 'kissmanga.com':
         import kissmanga
-        return kissmanga.get_site(url)
+        return kissmanga.Kissmanga()
     else:
         return None
 
