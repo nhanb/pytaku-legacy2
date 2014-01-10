@@ -5,7 +5,7 @@ install:
 - export PYTHONPATH="$PYTHONPATH:google_appengine"
 before_script:
 - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
-- unzip -qd ~/ google_appengine_1.8.8.zip
+- unzip -q google_appengine_1.8.8.zip
 script: python test/runtests.py
 notifications:
   hipchat:
