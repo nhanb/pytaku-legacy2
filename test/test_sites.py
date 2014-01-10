@@ -13,7 +13,7 @@ class TestSitesInit(unittest.TestCase):
         self.assertIsInstance(obj, sites.kissmanga.Kissmanga)
 
         obj = sites.get_site('http://nerdyweekly.com/blah')
-        self.assertNotIsInstance(obj, sites.kissmanga.Kissmanga)
+        self.assertIsNone(obj)
 
     # sites.get_html() is too trivial to test, since it's only a thin wrapper
     # of the most basic urlfetch usage
