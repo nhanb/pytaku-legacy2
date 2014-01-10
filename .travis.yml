@@ -9,7 +9,7 @@ before_script:
 script: python test/runtests.py
 after_success:
   # Deploy if build successful on branch master
-if [ "$TRAVIS_BRANCH" == "master" ]; then rm -rf test google_appengine_1.8.8.zip ; python ~/google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update . ; fi;
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then rm -rf test google_appengine_1.8.8.zip ; python ~/google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update . ; fi;
 notifications:
   hipchat:
     rooms:
