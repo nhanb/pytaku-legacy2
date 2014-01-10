@@ -4,8 +4,7 @@ import os
 import unittest
 
 
-if __name__ == '__main__':
-
+def main():
     # Add SDK path to, well, PATH
     sdk_path = os.environ.get(
         'GAE_PATH',  # read environment variable if available
@@ -20,3 +19,6 @@ if __name__ == '__main__':
 
     suite = unittest.loader.TestLoader().discover(test_path)
     unittest.TextTestRunner(verbosity=2).run(suite)
+
+if __name__ == '__main__':
+    main()
