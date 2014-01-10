@@ -1,15 +1,18 @@
 language: python
 python:
-  - '2.7'
+- '2.7'
 install:
-  - export PYTHONPATH="$PYTHONPATH:google_appengine"
+- export PYTHONPATH="$PYTHONPATH:google_appengine"
 before_script:
-  - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
-  - unzip -q google_appengine_1.8.8.zip
+- wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
+- unzip -q google_appengine_1.8.8.zip
 script: python test/runtests.py
 after_success:
-  - python google_appengine/appcfg.py --oauth2 --noauth_local_webserver update .
+- python google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update .
 notifications:
   hipchat:
     rooms:
       secure: nUr1k5BuYaB47gPQbMMoxhz+wJr7K5WwC+6DnecM3+CmXn6E5iaXCYjfEFM5HTgM3WWlexBmOUaiTQL/JGAdEGDy7aAhzobCdSASRYBqHUya17OEHrDy6BRpnz26fd0FU6UhvpzVwgGMy8T7Uh6iRLpfzdSG0TkkdjDHNq6kwMM=
+env:
+  global:
+    secure: dvBm6F/L2xLUP229r/pGKx/5BRksaOYZBpUcKTDbfQbK/imjIc3HOF1lE74TKUGGnkuAun4XvkBuNNaOshL2Od+zKDEpBwvyzGWvAInxyiQdbldBKbqFB5Mlh27s/WWJhippveerJwXOjncNghZxSAsQskATLQAc6bSj48yah0g=
