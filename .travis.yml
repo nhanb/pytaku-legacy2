@@ -1,6 +1,8 @@
 language: python
 python:
 - '2.7'
+install:
+- export PYTHONPATH="$PYTHONPATH:~/google_appengine:~/nhanb/pytaku"
 before_script:
 - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
 - unzip -qd ~/ google_appengine_1.8.8.zip
