@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 import webapp2
-import os
-import sys
-
-# Add project root to PATH
-path = os.path.dirname(__file__)
-sys.path.append(path)
 
 
 class MainHandler(webapp2.RequestHandler):
