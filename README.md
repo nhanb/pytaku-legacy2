@@ -6,12 +6,7 @@ Manga fetcher for otaku on the go
 
 ## Development environment setup
 
-Make sure you have the follow environment variables set up:
+Make sure your `$PYTHONPATH` environment variable includes:
 
-- `$GAE_PATH`: path to GAE python SDK on your machine, necessary for the test
-  suite. If this envar is not available then the test suite will go for
-  `~/google_appengine` by default.
-- `$PYTHONPATH`: this should include the GAE path and root project path to
-  help your code completer (might be unnessary for smart IDEs, but it seems
-  like vim's YouCompleteMe python support isn't there yet - or maybe I'm just
-  too dumb to find the right config variable, whatever) 
+- Path to Google App Engine SDK on your computer
+- Path to your project root

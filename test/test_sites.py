@@ -27,10 +27,10 @@ class TestKissmanga(unittest.TestCase):
         self.testbed.init_urlfetch_stub()
 
         self.chapter_html = sites.get_html(kissurl)
-        self.assertTrue(False)
 
     def test_get_pages(self):
         pass
+        # TODO: finish test cases for this
 
 if __name__ == '__main__':
     unittest.main()
