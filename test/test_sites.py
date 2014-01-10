@@ -27,6 +27,7 @@ class TestKissmanga(unittest.TestCase):
         self.testbed.init_urlfetch_stub()
 
         self.chapter_html = sites.get_html(kissurl)
+        self.assertTrue(False)
 
     def test_get_pages(self):
         pass

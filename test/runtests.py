@@ -1,16 +1,9 @@
 #!/usr/bin/python
-import sys
 import os
 import unittest
 
 
 def main():
-    # Add SDK path to, well, PATH
-    sdk_path = os.environ.get(
-        'GAE_PATH',  # read environment variable if available
-        os.environ.get('HOME') + '/google_appengine'  # gae path on travis
-    )
-    sys.path.insert(0, sdk_path)
     import dev_appserver
     dev_appserver.fix_sys_path()
 
