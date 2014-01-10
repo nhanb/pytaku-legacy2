@@ -2,14 +2,14 @@ language: python
 python:
 - '2.7'
 install:
-- export PYTHONPATH="$PYTHONPATH:google_appengine"
+- export PYTHONPATH="$PYTHONPATH:$HOME/google_appengine"
 before_script:
 - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
-- unzip -q google_appengine_1.8.8.zip
+- unzip -qd ~/ google_appengine_1.8.8.zip
 script: python test/runtests.py
 after_success:
-- rm -rf google_appengine test google_appengine_1.8.8.zip
-- python google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update .
+- rm -rf test
+- python ~/google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update .
 notifications:
   hipchat:
     rooms:
