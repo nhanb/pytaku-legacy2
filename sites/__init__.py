@@ -14,8 +14,11 @@ def get_site(url):
 
 # Return whole html string of the fetched url, return None if failed
 def get_html(url):
-    resp = urlfetch.fetch(url)
-    if resp.status_code == 200:
-        return resp.content
-    else:
+    try:
+        resp = urlfetch.fetch(url)
+        if resp.status_code == 200:
+            return resp.content
+        else:
+            return None
+    except:
         return None

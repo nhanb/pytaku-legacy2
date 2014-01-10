@@ -6,7 +6,9 @@ from google.appengine.ext import testbed
 class TestSitesInit(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.testbed = testbed.Testbed()
+        self.testbed.activate()
+        self.testbed.init_urlfetch_stub()
 
     def test_get_site(self):
         obj = sites.get_site(kissurl)
@@ -15,18 +17,30 @@ class TestSitesInit(unittest.TestCase):
         obj = sites.get_site('http://nerdyweekly.com/blah')
         self.assertIsNone(obj)
 
-    # sites.get_html() is too trivial to test, since it's only a thin wrapper
-    # of the most basic urlfetch usage
+    def test_get_html(self):
+        cases = [
+            ['', None],
+            ['asdf', None],
+            ['@#sdf%123"', None],
+            # TODO: add success cases
+        ]
+
+        for url, expected in cases:
+            result = sites.get_html(url)
+            if expected is None:
+                self.assertIsNone(result)
+            else:
+                self.assertEqual(expected)
 
 
 class TestKissmanga(unittest.TestCase):
 
-    def setUp(self):
-        self.testbed = testbed.Testbed()
-        self.testbed.activate()
-        self.testbed.init_urlfetch_stub()
+    #def setUp(self):
+        #self.testbed = testbed.Testbed()
+        #self.testbed.activate()
+        #self.testbed.init_urlfetch_stub()
 
-        self.chapter_html = sites.get_html(kissurl)
+        #self.chapter_html = sites.get_html(kissurl)
 
     def test_get_pages(self):
         pass
