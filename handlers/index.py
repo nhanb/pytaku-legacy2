@@ -27,7 +27,7 @@ class IndexHandler(webapp2.RequestHandler):
         template_values = {
             'apiToken': apiToken,
             'username': user.nickname(),
-            'userid': user.user_id(),
+            'userId': user.user_id(),
         }
         path = os.path.join(os.path.dirname(__file__) +
                             '/../templates/', 'index.html')
