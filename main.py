@@ -11,7 +11,8 @@ class IndexHandler(webapp2.RequestHandler):
             'apiPublic': 'mypublic',
             'username': 'NHAN',
         }
-        path = os.path.join(os.path.dirname(__file__) + '/templates/', 'index.html')
+        path = os.path.join(os.path.dirname(__file__) +
+                            '/templates/', 'index.html')
         self.response.out.write(template.render(path, template_values))
 
 app = webapp2.WSGIApplication([
