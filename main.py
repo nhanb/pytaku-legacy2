@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 import webapp2
+import os
+from google.appengine.ext.webapp import template
 
 
-class MainHandler(webapp2.RequestHandler):
+class IndexHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        template_values = {
+            'apiSecret': 'mysecret',
+            'apiPublic': 'mypublic',
+            'username': 'NHAN',
+        }
+        path = os.path.join(os.path.dirname(__file__) + '/templates/', 'index.html')
+        self.response.out.write(template.render(path, template_values))
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', IndexHandler)
 ], debug=True)

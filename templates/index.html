@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pytaku</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/static/lib/loader/loader.css" rel="stylesheet">
+  <link href="/static/style.css" rel="stylesheet">
+
+  <script>
+    // API keys for REST authentication
+    var apiSecret = '{{ apiSecret }}';
+    var apiPublic = '{{ apiPublic }}';
+    var username = '{{ username }}';
+  </script>
+  <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="/static/lib/knockout/knockout-3.0.0.js"></script>
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Pytaku</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i> Home</a></li>
+        <li><a href="/oauth"><i class="fa fa-dropbox fa-lg"></i> Authenticate with Dropbox</a></li>
+        <li><a href="https://github.com/nhanb/pytaku"><i class="fa fa-github fa-lg"></i> Github</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><strong>{{ username }}</strong></a></li>
+        <li>
+        <button data-toggle='tooltip' title='This means logging out of gmail!'
+          id="logout" class="btn btn-default btn-danger navbar-btn">
+          <i class="icon-ban-circle"></i> Logout
+        </button>
+        </li>
+      </ul>
+
+    </div><!--/.nav-collapse -->
+
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row-fluid"> <!-- input-row -->
+
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Enter manga title">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button">Go!</button>
+      </span>
+    </div><!-- /input-group for manga title -->
+
+  </div> <!-- /input-row -->
+
+  <div class="row"> <!-- manga-row -->
+    <div class="col col-md-10 col-md-offset-1"> <!-- col to restrict width -->
+      <h2>Results</h2>
+      <div class="panel-group" id="accordion" data-bind="foreach: titles">
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion"
+                data-bind="text: name, attr: {href: ('#' + $index())}, click:init">
+              </a>
+              <button type="button" class="btn btn-default" data-toggle="collapse"
+                data-bind="attr: {'data-target': ('#' + $index())}, click: init">
+                Show
+              </button>
+            </h4>
+          </div> <!-- /panel-heading -->
+
+          <!-- CSS loader animation http://codepen.io/samueljweb/pen/LbGxi -->
+          <div id="container" data-bind="visible: initStatus() == 1">
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <div class="stick"></div>
+            <h1>Loading...</h1>
+          </div>
+
+          <div data-bind="attr: {id: $index}, visible: (initStatus() == 2)" class="panel-collapse collapse">
+            <div class="panel-body">
+
+              <img class="img-thumbnail" data-bind="attr: {src: thumbUrl}">
+
+              <h2>Chapters:</h2>
+              <button type="button" class="btn btn-danger">
+                Download all chapters
+              </button>
+              <button type="button" class="btn btn-primary"
+                data-bind="enable: canDownloadSelected"
+                >Download selected chapters</button>
+              <hr>
+              <ul class="list-group" data-bind="foreach: chapters">
+
+                <li data-bind="attr: {class: selected() ? 'list-group-item list-group-item-info' : 'list-group-item'}">
+                <button type="button" class="btn btn-primary btn-sm"
+                  data-bind="click: toggle, text: selected()? 'Deselect' : 'Select'">
+                </button>
+                <button type="button" class="btn btn-success btn-sm">Download</button>
+                <span data-bind="text: name"></span>
+                </li>
+
+              </ul>
+              <button type="button" class="btn btn-primary"
+                data-bind="enable: canDownloadSelected"
+                >Download selected chapters</button>
+            </div>
+          </div> <!-- /panel-body -->
+
+        </div> <!-- panel -->
+
+      </div> <!-- /panel-group -->
+    </div> <!-- /column -->
+  </div> <!-- /manga-row -->
+
+  <!--<div class="row-fluid" data-bind="foreach: titles"> [> manga-row <]-->
+    <!--<hr>-->
+    <!--<img data-bind="attr: {src: thumbUrl}">-->
+    <!--<h2 data-bind="text: name"></h2>-->
+    <!--<button class="btn btn-default" type="button">Expand</button>-->
+    <!--<button class="btn btn-default" type="button">Select all</button>-->
+    <!--<button class="btn btn-default" type="button">Clear all</button>-->
+    <!--<button class="btn btn-success" type="button">Download selected</button>-->
+  <!--</div> [> manga-row <]-->
+
+
+</div> <!-- /container -->
+
+<script src="/static/app.js"></script>
+</body>
+</html>
