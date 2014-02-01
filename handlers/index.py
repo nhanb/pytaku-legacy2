@@ -19,6 +19,7 @@ class IndexHandler(webapp2.RequestHandler):
         if otaku is None:
             otaku = Otaku()
             otaku.userid = user.user_id()
+            otaku.put()
 
         # This token will be used for subsequent REST API requests - some sort
         # of sessionID, I guess...
@@ -28,6 +29,7 @@ class IndexHandler(webapp2.RequestHandler):
             'apiToken': apiToken,
             'username': user.nickname(),
             'userId': user.user_id(),
+            'dropboxed': str(otaku.dropbox_access_token is not None).lower(),
         }
         path = os.path.join(os.path.dirname(__file__) +
                             '/../templates/', 'index.html')

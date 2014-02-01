@@ -83,12 +83,12 @@ class Callback(webapp2.RequestHandler):
         access_token = data.get('access_token')
         if access_token is None:
             msg_params = {
-                'msg': "GitHub authorization failed!",
+                'msg': "Dropbox authorization failed!",
                 'type': 'danger'
             }
         else:
             msg_params = {
-                'msg': "GitHub authorization complete!",
+                'msg': "Dropbox authorization complete!",
                 'type': 'success'
             }
 

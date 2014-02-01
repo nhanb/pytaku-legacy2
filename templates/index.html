@@ -14,6 +14,7 @@
     var apiToken = '{{ apiToken }}';
     var username = '{{ username }}';
     var userId = '{{ userId }}';
+    var dropboxed = {{ dropboxed }};
   </script>
   <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
@@ -36,7 +37,11 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i> Home</a></li>
-        <li><a href="/oauth"><i class="fa fa-dropbox fa-lg"></i> Authenticate with Dropbox</a></li>
+        <li>
+          <a data-bind="attr: {href: ('/auth?userid=' + userId)}">
+            <i class="fa fa-dropbox fa-lg"></i> Authenticate with Dropbox
+          </a>
+        </li>
         <li><a href="https://github.com/nhanb/pytaku"><i class="fa fa-github fa-lg"></i> Github</a></li>
       </ul>
 

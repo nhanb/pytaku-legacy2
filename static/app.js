@@ -51,11 +51,12 @@ function AlertModel(msg, type) {
 }
 
 // Shameless stackoverflow ripoff
-// http://stackoverflow.com/questions/1403888/get-escaped-url-parameter
-function getURLParameter(name) {
-    return decodeURI(
-            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-        ).replace(/\+/g, ' ');
+// http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 function AppViewModel() {
@@ -72,9 +73,7 @@ function AppViewModel() {
         new MangaTitle('Naruto', 'http://kissmanga.com/Uploads/Etc/8-22-2011/5189522cover.jpg')
     ]);
 
-    this.alerts = ko.observableArray([
-        new AlertModel(getURLParameter('msg'), getURLParameter('type'))
-    ]);
+    this.alerts = ko.observableArray([]);
 
     this.pushAlert = function(msg, type) {
         this.alerts.push(new AlertModel(msg, type));
@@ -83,6 +82,17 @@ function AppViewModel() {
     this.removeAlert = function(al) {
         this.alerts.remove(al);
     }.bind(this);
+
+    // Alert if there's some message passed in as URL parameters
+    var msg = getParameterByName('msg');
+    if (msg != '') {
+        this.pushAlert(msg, getParameterByName('type'));
+    }
+
+    // Is your dropbox account linked? If not, show alert!
+    if (!dropboxed) {
+        this.pushAlert("You dropbox account has not been linked. Please click 'Authenticate with Dropbox' first.", 'danger');
+    }
 }
 
 // Activates knockout.js
