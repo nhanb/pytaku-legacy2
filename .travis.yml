@@ -4,12 +4,12 @@ python:
 install:
   - export PYTHONPATH="$PYTHONPATH:$HOME/google_appengine"
 before_script:
-  - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.8.zip -nv
-  - unzip -qd ~/ google_appengine_1.8.8.zip
+  - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.9.zip -nv
+  - unzip -qd ~/ google_appengine_1.8.9.zip
 script: python test/runtests.py
-after_success:
-  # Deploy if build successful on branch master
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then rm -rf test google_appengine_1.8.8.zip ; python ~/google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update . ; fi;
+#after_success:
+  ## Deploy if build successful on branch master
+  #- if [ "$TRAVIS_BRANCH" == "master" ]; then rm -rf test google_appengine_1.8.9.zip ; python ~/google_appengine/appcfg.py --oauth2_refresh_token="$APPCFG_TOKEN" update . ; fi;
 notifications:
   hipchat:
     rooms:
