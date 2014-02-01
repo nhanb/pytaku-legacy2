@@ -23,7 +23,6 @@ class Kissmanga(object):
         ipat = re.compile('/([0-9]{3}\.(png|jpg))\?')
         self.pages = ((ipat.findall(x)[0][0], x) for x in page_links)
 
-
     # Return a list of dictionaries that store at least title and url:
     # [ { 'title': 'Naruto', 'url': 'http://...' }, {...}, ... ]
     def search_title(self, keyword):
@@ -42,6 +41,5 @@ class Kissmanga(object):
         content = '<data>%s</data>' % resp.content
         parsed = ET.fromstring(content)
 
-        result = [{'title': item.text.strip(), 'url': item.attrib['href']}
-                  for item in parsed]
-        return result
+        return [{'title': item.text.strip(), 'url': item.attrib['href']}
+                for item in parsed]
