@@ -45,20 +45,44 @@ function MangaTitle(name, thumbUrl) {
     }
 }
 
-function AppViewModel() {
-    var self = this;
+function AlertModel(msg, type) {
+    this.message = msg;
+    this.type = typeof type !== 'undefined' ? type : 'info';
+}
 
-    self.options = {
+// Shameless stackoverflow ripoff
+// http://stackoverflow.com/questions/1403888/get-escaped-url-parameter
+function getURLParameter(name) {
+    return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        ).replace(/\+/g, ' ');
+}
+
+function AppViewModel() {
+
+    this.options = {
         showThumbs: true,
         updateMangaList: true,
         updateChapterList: true,
         sites: ['kissmanga']
     };
 
-    self.titles = ko.observableArray([
+    this.titles = ko.observableArray([
         new MangaTitle('Boo'),
         new MangaTitle('Naruto', 'http://kissmanga.com/Uploads/Etc/8-22-2011/5189522cover.jpg')
     ]);
+
+    this.alerts = ko.observableArray([
+        new AlertModel(getURLParameter('msg'), getURLParameter('type'))
+    ]);
+
+    this.pushAlert = function(msg, type) {
+        this.alerts.push(new AlertModel(msg, type));
+    };
+
+    this.removeAlert = function(al) {
+        this.alerts.remove(al);
+    }.bind(this);
 }
 
 // Activates knockout.js

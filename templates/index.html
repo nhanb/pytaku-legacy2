@@ -57,6 +57,17 @@
 
 <div class="container">
 
+  <div class="row-fluid" > <!-- alerts -->
+    <div data-bind="foreach: alerts">
+      <div data-bind="attr: { class: ('alert alert-' + type) }">
+        <button type="button" class="close" aria-hidden="true"
+          data-bind="click: $parent.removeAlert"
+          >&times;</button>
+        <span data-bind="text:message"></span>
+      </div>
+    </div>
+  </div> <!-- /alerts -->
+
   <div class="row-fluid"> <!-- input-row -->
 
     <div class="input-group">
