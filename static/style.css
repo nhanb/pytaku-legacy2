@@ -10,7 +10,8 @@
   margin: -10px auto;
 }
 
-/* Compulsory for bootstrap fixed navbar */
+
 body {
-    padding-top: 70px;
+    padding-top: 70px; /* Compulsory for bootstrap fixed navbar */
+    font-family: "Open Sans", Helvetica, sans-serif;
 }
