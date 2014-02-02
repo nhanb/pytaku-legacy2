@@ -10,16 +10,16 @@ class Kissmanga(object):
     # Return a list of dictionaries that store at least title and url:
     # [ { 'title': 'Naruto', 'url': 'http://...' }, {...}, ... ]
     def search_titles(self, keyword):
-        base = 'http://kissmanga.com/Search/SearchSuggest'
+        url = 'http://kissmanga.com/Search/SearchSuggest'
         params = {
             'type': 'Manga',
             'keyword': keyword,
         }
-        url = base + '?' + urllib.urlencode(params)
-        resp = urlfetch.fetch(url, None, 'POST')
+        payloads = urllib.urlencode(params)
+        resp = urlfetch.fetch(url, payload=payloads, method='POST')
 
-        if resp.status_code != 0:
-            return None
+        if resp.status_code != 200:
+            return 'screwed'
 
         # Kissmanga returns manga titles and links in xml format
         content = '<data>%s</data>' % resp.content

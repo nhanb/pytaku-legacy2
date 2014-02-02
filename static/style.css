@@ -5,6 +5,11 @@
     max-height: 300px;
 }
 
+#btn-search {
+  display: block;
+  margin: -10px auto;
+}
+
 /* Compulsory for bootstrap fixed navbar */
 body {
     padding-top: 70px;

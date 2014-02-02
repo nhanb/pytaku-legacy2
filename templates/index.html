@@ -69,18 +69,21 @@
 
   <div class="row-fluid"> <!-- input-row -->
 
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Enter manga title">
-      <span class="input-group-btn">
-        <button class="btn btn-primary" type="button">Go!</button>
-      </span>
-    </div><!-- /input-group for manga title -->
+    <div class="col col-md-6 col-md-offset-3">
+      <input type="text" class="form-control" id="text-search" placeholder="Enter keyword here..."
+      data-bind="value: mangaQuery, valueUpdate: 'keyup'">
+      <br>
+        <button class="btn btn-primary" id="btn-search" type="button"
+          data-bind="click: searchManga">
+          <i class="fa fa-lg" data-bind="css: { 'fa-search': !updatingTitles(), 'fa-spinner fa-spin': updatingTitles}"></i> Search manga title
+        </button>
+    </div>
 
   </div> <!-- /input-row -->
 
   <div class="row"> <!-- manga-row -->
     <div class="col col-md-10 col-md-offset-1"> <!-- col to restrict width -->
-      <h2>Results</h2>
+      <h2 data-bind="visible: hasTitles">Results</h2>
       <div class="panel-group" id="accordion" data-bind="foreach: titles">
 
         <div class="panel panel-default">

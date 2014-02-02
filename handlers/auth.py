@@ -15,7 +15,7 @@ class Otaku(ndb.Model):
 
     # userid will be used as public API key
     userid = ndb.StringProperty()
-    api_token = ndb.StringProperty(indexed=False)  # pytaku API private key
+    api_token = ndb.StringProperty(indexed=True)  # pytaku API private key
 
     dropbox_state = ndb.StringProperty(indexed=False)
     dropbox_access_token = ndb.StringProperty(indexed=False)

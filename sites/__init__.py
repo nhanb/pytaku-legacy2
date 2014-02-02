@@ -12,6 +12,11 @@ def get_site(url):
         return None
 
 
+def available_sites(options):
+    import kissmanga
+    return [kissmanga.Kissmanga()]
+
+
 # Return whole html string of the fetched url, return None if failed
 def get_html(url):
     try:
