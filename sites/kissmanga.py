@@ -1,7 +1,5 @@
-import urlparse
 import urllib
 from google.appengine.api import urlfetch
-from sites import get_html
 import re
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
@@ -9,24 +7,9 @@ from bs4 import BeautifulSoup
 
 class Kissmanga(object):
 
-    def get_chapter_name(self, url):
-        parsed = urlparse.urlparse(url)
-        return parsed.path.split('/')[-1]
-
-    def get_pages(self, url):
-        html = get_html(url)
-
-        # Create regex to match page link
-        pat = re.compile('lstImages\.push\("(.+?)"\);')
-        page_links = pat.findall(html)
-
-        # Regex to match page image file name
-        ipat = re.compile('/([0-9]{3}\.(png|jpg))\?')
-        self.pages = ((ipat.findall(x)[0][0], x) for x in page_links)
-
     # Return a list of dictionaries that store at least title and url:
     # [ { 'title': 'Naruto', 'url': 'http://...' }, {...}, ... ]
-    def search_title(self, keyword):
+    def search_titles(self, keyword):
         base = 'http://kissmanga.com/Search/SearchSuggest'
         params = {
             'type': 'Manga',
@@ -47,21 +30,38 @@ class Kissmanga(object):
 
     # All kinds of data
     # - chapters {title, url}
-    # - thumbnailUrl
-    # - tags
-    def get_manga_info(self, html):
+    # - thumbnailUrl "url"
+    # - tags [tag1, tag2, ...]
+    def manga_info(self, html):
         soup = BeautifulSoup(html)
-        chapters = self.get_chapters(soup)
-        thumbnailUrl = self.get_thumbnail_url(soup)
-        return {'chapters': chapters, 'thumbnailUrl': thumbnailUrl}
+        chapters = self._chapters(soup)
+        thumbnailUrl = self._thumbnail_url(soup)
+        tags = self._tags(soup)
+        return {'chapters': chapters,
+                'thumbnailUrl': thumbnailUrl,
+                'tags': tags}
 
     # Chapters - latest first
-    def get_chapters(self, soup):
+    def _chapters(self, soup):
         table = soup.find('table', class_='listing')
         return [{'url': 'http://kissmanga.com' + a['href'],
                 'title': a.string.strip()}
                 for a in table.find_all('a')]
 
     # Thumbnail url
-    def get_thumbnail_url(self, soup):
+    def _thumbnail_url(self, soup):
         return soup.find('link', {'rel': 'image_src'})['href']
+
+    # Tags
+    def _tags(self, soup):
+        tags = soup.find('span', text='Genres:').find_next_siblings('a')
+        return [text.string.lower() for text in tags]
+
+    def chapter_pages(self, html):
+        # Create regex to match page link
+        pat = re.compile('lstImages\.push\("(.+?)"\);')
+        page_links = pat.findall(html)
+
+        # Regex to match page image file name
+        ipat = re.compile('/([0-9]{3}\.(png|jpg))\?')
+        return ((ipat.findall(x)[0][0], x) for x in page_links)
