@@ -4,6 +4,7 @@ from google.appengine.api import urlfetch
 from sites import get_html
 import re
 import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
 
 
 class Kissmanga(object):
@@ -43,3 +44,24 @@ class Kissmanga(object):
 
         return [{'title': item.text.strip(), 'url': item.attrib['href']}
                 for item in parsed]
+
+    # All kinds of data
+    # - chapters {title, url}
+    # - thumbnailUrl
+    # - tags
+    def get_manga_info(self, html):
+        soup = BeautifulSoup(html)
+        chapters = self.get_chapters(soup)
+        thumbnailUrl = self.get_thumbnail_url(soup)
+        return {'chapters': chapters, 'thumbnailUrl': thumbnailUrl}
+
+    # Chapters - latest first
+    def get_chapters(self, soup):
+        table = soup.find('table', class_='listing')
+        return [{'url': 'http://kissmanga.com' + a['href'],
+                'title': a.string.strip()}
+                for a in table.find_all('a')]
+
+    # Thumbnail url
+    def get_thumbnail_url(self, soup):
+        return soup.find('link', {'rel': 'image_src'})['href']
