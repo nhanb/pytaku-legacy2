@@ -29,7 +29,7 @@ class Kissmanga(object):
                 for item in parsed]
 
     # All kinds of data
-    # - chapters {title, url}
+    # - chapters [{title, url}, {}, ...] - latest first
     # - thumbnailUrl "url"
     # - tags [tag1, tag2, ...]
     def manga_info(self, html):
@@ -41,27 +41,20 @@ class Kissmanga(object):
                 'thumbnailUrl': thumbnailUrl,
                 'tags': tags}
 
-    # Chapters - latest first
     def _chapters(self, soup):
         table = soup.find('table', class_='listing')
         return [{'url': 'http://kissmanga.com' + a['href'],
                 'title': a.string.strip()}
                 for a in table.find_all('a')]
 
-    # Thumbnail url
     def _thumbnail_url(self, soup):
         return soup.find('link', {'rel': 'image_src'})['href']
 
-    # Tags
     def _tags(self, soup):
         tags = soup.find('span', text='Genres:').find_next_siblings('a')
         return [text.string.lower() for text in tags]
 
-    def chapter_pages(self, html):
-        # Create regex to match page link
+    # Pages urls from a chapter
+    def chapter_pages_urls(self, html):
         pat = re.compile('lstImages\.push\("(.+?)"\);')
-        page_links = pat.findall(html)
-
-        # Regex to match page image file name
-        ipat = re.compile('/([0-9]{3}\.(png|jpg))\?')
-        return ((ipat.findall(x)[0][0], x) for x in page_links)
+        return pat.findall(html)
