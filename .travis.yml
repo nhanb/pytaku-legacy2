@@ -2,7 +2,7 @@ language: python
 python:
   - '2.7'
 install:
-  - export PYTHONPATH="$PYTHONPATH:$HOME/google_appengine"
+    - export PYTHONPATH="$PYTHONPATH:$HOME/google_appengine:`pwd`/libs"
 before_script:
   - wget http://googleappengine.googlecode.com/files/google_appengine_1.8.9.zip -nv
   - unzip -qd ~/ google_appengine_1.8.9.zip
