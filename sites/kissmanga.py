@@ -41,12 +41,6 @@ class Kissmanga(object):
                 'thumbnailUrl': thumbnailUrl,
                 'tags': tags}
 
-    # Without the cookie, a confirmation page will be shown instead of the
-    # actual manga content
-    def fetch_manga_seed_page(self, url):
-        header = {'Cookie': 'vns_Adult=yes'}
-        return urlfetch.fetch(url, headers=header).content
-
     def _chapters(self, soup):
         table = soup.find('table', class_='listing')
         return [{'url': 'http://kissmanga.com' + a['href'],
@@ -64,3 +58,9 @@ class Kissmanga(object):
     def chapter_pages_urls(self, html):
         pat = re.compile('lstImages\.push\("(.+?)"\);')
         return pat.findall(html)
+
+    # urlfetch wrapper for manga seed page: needs this cookie to skip the adult
+    # content warning page
+    def fetch_manga_seed_page(self, url):
+        header = {'Cookie': 'vns_Adult=yes'}
+        return urlfetch.fetch(url, headers=header).content
