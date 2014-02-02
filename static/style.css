@@ -12,6 +12,6 @@
 
 
 body {
-    padding-top: 70px; /* Compulsory for bootstrap fixed navbar */
+    /*padding-top: 70px; [> Compulsory for bootstrap fixed navbar <]*/
     font-family: "Open Sans", Helvetica, sans-serif;
 }
