@@ -17,12 +17,10 @@ function MangaTitle(name, url, thumbUrl) {
     var self = this;
     self.name = name;
     self.url = url;
-    self.thumbUrl = typeof thumbUrl !== 'undefined' ? thumbUrl : '/static/noThumb.jpg';
-    self.chapters = ko.observableArray([
-        new MangaChapter('Chapter 01 -  Whatever', '#'),
-        new MangaChapter('Chapter 02 -  Whatever and here comes a very very very very long title ;)', '#'),
-        new MangaChapter('Chapter 03 -  Whatever', '#')
-    ]);
+    thumbUrlRaw = typeof thumbUrl !== 'undefined' ? thumbUrl : '/static/noThumb.jpg';
+    self.thumbUrl = ko.observable(thumbUrlRaw);
+    self.chapters = ko.observableArray([]);
+    self.tags = ko.observableArray([]);
 
     self.canDownloadSelected = ko.computed(function() {
         var ch = self.chapters();
@@ -36,12 +34,34 @@ function MangaTitle(name, url, thumbUrl) {
 
     self.initStatus = ko.observable(0);
 
+    // ---------------- Using Pytaku REST API: fetch Manga data ------------
+
     self.init = function() {
         if (self.initStatus() == 0) {
             self.initStatus(1);
-            window.setTimeout(function(){
-                self.initStatus(2);
-            }, 2000);
+
+            var url = '/api/manga/info?url=' + encodeURIComponent(self.url);
+            $.ajax(url, {
+                headers: {
+                    Pytoken: apiToken,
+                Userid: userId
+                },
+                success: self.mangaInfoCallback
+            });
+        }
+    }
+
+    self.mangaInfoCallback = function(data, stt, xhr) {
+        self.initStatus(2);
+        info = JSON.parse(data);
+
+        self.thumbUrl(info['thumbnailUrl']);
+        self.tags(info['tags']);
+
+        chapters = info['chapters'];
+        for (var i = 0; i < chapters.length; i++) {
+            self.chapters.push(new MangaChapter(
+                        chapters[i]['title'], chapters[i]['url']));
         }
     }
 }

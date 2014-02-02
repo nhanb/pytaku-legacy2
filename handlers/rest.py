@@ -26,6 +26,13 @@ class MangaHandler(webapp2.RequestHandler):
 
     @auth
     def get(self):
+        path = self.request.path.split('/')
+        if len(path) == 3:  # that is just plain /api/manga
+            self.get_manga_list()
+        elif len(path) == 4:  # basically anything: /api/manga/crap?url=...
+            self.get_manga_info()
+
+    def get_manga_list(self):
         keyword = self.request.get('keyword')
         s = sites.available_sites('')
         titles = []
@@ -34,4 +41,14 @@ class MangaHandler(webapp2.RequestHandler):
             titles.extend(site.search_titles(keyword))
 
         result = json.dumps(titles)
+        self.response.write(result)
+
+    def get_manga_info(self):
+        url = self.request.get('url')
+        s = sites.get_site(url)
+
+        html = sites.get_html(url)
+        info = s.manga_info(html)
+
+        result = json.dumps(info)
         self.response.write(result)
