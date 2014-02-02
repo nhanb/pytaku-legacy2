@@ -107,6 +107,8 @@ function AppViewModel() {
 
     this.searchManga = function() {
 
+        self.mangaQuery($.trim(self.mangaQuery()));
+
         // TODO: Better come up with a solid server-side protection too
         if (self.mangaQuery().length < 2) return;
 
@@ -119,19 +121,19 @@ function AppViewModel() {
             data: {
                 keyword: self.mangaQuery()
             },
-            success: self.searchMangaCallback
+            success: self.searchMangaCallback,
+            complete: function() {
+                self.updatingTitles(false);
+            }
         });
     }
     this.searchMangaCallback = function(data, textStatus, xhr) {
-        self.updatingTitles(false);
-        if (textStatus === "success") {
-            ar = JSON.parse(data);
-            // Reset title list
-            self.titles([]);
+        ar = JSON.parse(data);
+        // Reset title list
+        self.titles([]);
 
-            for (var i = 0; i < ar.length ; i++) {
-                self.titles.push(new MangaTitle(ar[i]['title'], ar[i]['url']));
-            }
+        for (var i = 0; i < ar.length ; i++) {
+            self.titles.push(new MangaTitle(ar[i]['title'], ar[i]['url']));
         }
     }
 }
@@ -150,7 +152,7 @@ $(document).ready(function() {
 
     // Enter to fire off search function
     $('#text-search').keypress(function(ev) {
-        if (ev.keyCode == 13 && $.trim($(this).val())) {
+        if (ev.keyCode == 13) {
             $('#btn-search').trigger('click');
         }
 
