@@ -9,4 +9,5 @@ app = webapp2.WSGIApplication([
     ('/auth', auth.Init),
     ('/auth/callback', auth.Callback),
     ('/api/manga.*', rest.MangaHandler),
+    ('/api/fetch.*', rest.FetchHandler),
 ], debug=True)

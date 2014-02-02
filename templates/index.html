@@ -130,7 +130,9 @@
                 <button type="button" class="btn btn-primary btn-sm"
                   data-bind="click: toggle, text: selected()? 'Deselect' : 'Select'">
                 </button>
-                <button type="button" class="btn btn-success btn-sm">Download</button>
+                <button type="button" class="btn btn-success btn-sm"
+                  data-bind="click: downloadSingleChapter"
+                  >Download</button>
                 <span data-bind="text: name"></span>
                 </li>
 

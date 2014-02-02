@@ -44,7 +44,7 @@ function MangaTitle(name, url, thumbUrl) {
             $.ajax(url, {
                 headers: {
                     Pytoken: apiToken,
-                Userid: userId
+                    Userid: userId
                 },
                 success: self.mangaInfoCallback
             });
@@ -136,7 +136,7 @@ function AppViewModel() {
         $.ajax('/api/manga', {
             headers: {
                 Pytoken: apiToken,
-            Userid: userId
+                Userid: userId
             },
             data: {
                 keyword: self.mangaQuery()
