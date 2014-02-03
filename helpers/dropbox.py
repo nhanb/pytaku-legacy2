@@ -18,7 +18,9 @@ def upload(name, content, token):
         'locale': 'en-US',
         'overwrite': 'true',
     }
-    url = files_put_url + '/' + name + '?' + urllib.urlencode(params)
+    url = '%s/%s/?%s' % (files_put_url,
+                         urllib.pathname2url(name),
+                         urllib.urlencode(params))
     headers = {'Authorization': 'Bearer ' + token}
     resp = urlfetch.fetch(url, content, 'PUT', headers)
     return resp.content
