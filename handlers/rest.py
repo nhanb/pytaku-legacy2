@@ -82,7 +82,6 @@ class FetchHandler(webapp2.RequestHandler):
             resp_code = 404
             i = 0
             while resp_code != 200 and i < 77:
-                self.response.write("Try #" + str(i) + "\n")
                 resp = urlfetch.fetch(page['url'])
                 resp_code = resp.status_code
                 i += 1
