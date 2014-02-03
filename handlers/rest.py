@@ -79,5 +79,12 @@ class FetchHandler(webapp2.RequestHandler):
         # Transfer pages to dropbox
         for page in pages:
             file_path = path + '/' + page['filename']
-            page_content = urlfetch.fetch(page['url']).content
+            resp_code = 404
+            i = 0
+            while resp_code != 200 and i < 77:
+                self.response.write("Try #" + str(i) + "\n")
+                resp = urlfetch.fetch(page['url'])
+                resp_code = resp.status_code
+                i += 1
+            page_content = resp.content
             dbx.upload(file_path, page_content, self.dbx_token)
