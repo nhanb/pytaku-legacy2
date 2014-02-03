@@ -32,7 +32,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Pytaku</a>
+      <a class="navbar-brand" tabindex="-1" href="#">Pytaku</a>
     </div>
 
     <div class="navbar-collapse collapse">
@@ -47,7 +47,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Hi there, <strong>{{ username }}</strong>!</a></li>
+        <li><a tabindex="-1" href="#">Hi there, <strong>{{ username }}</strong>!</a></li>
       </ul>
 
     </div><!--/.nav-collapse -->
@@ -75,7 +75,7 @@
       data-bind="value: mangaQuery, valueUpdate: 'keyup'">
       <br>
         <button class="btn btn-primary" id="btn-search" type="button"
-          data-bind="click: searchManga">
+          data-bind="click: searchManga" tabindex="-1">
           <i class="fa fa-lg" data-bind="css: { 'fa-search': !updatingTitles(), 'fa-spinner fa-spin': updatingTitles}"></i> Search manga title
         </button>
     </div>
@@ -91,7 +91,7 @@
 
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion"
+              <a data-toggle="collapse" data-parent="#accordion" tabindex="-1"
                 data-bind="text: name, attr: {href: ('#' + $index())}, click:init">
               </a>
               <button type="button" class="btn btn-default" data-toggle="collapse"
