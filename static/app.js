@@ -60,9 +60,10 @@ function MangaTitle(name, url, thumbUrl) {
 
         var ch = info['chapters'];
         for (var i = 0; i < ch.length; i++) {
-            self.chapters.push(new MangaChapter(
+            self.chapters().push(new MangaChapter(
                         ch[i]['title'], ch[i]['url']));
         }
+        self.chapters.valueHasMutated();
     }
 }
 
