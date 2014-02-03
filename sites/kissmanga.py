@@ -54,13 +54,17 @@ class Kissmanga(object):
         tags = soup.find('span', text='Genres:').find_next_siblings('a')
         return [text.string.lower() for text in tags]
 
-    # Pages urls from a chapter
-    def chapter_pages_urls(self, html):
+    # Pages from a chapter: [{ 'filename': '...', 'url': '...' }]
+    def chapter_pages(self, html):
         pat = re.compile('lstImages\.push\("(.+?)"\);')
-        return pat.findall(html)
+        matches = pat.findall(html)
+        pages = []
+        name_pat = '.*([0-9]{3}\.[a-zA-Z]+)\?.*'
+        for url in matches:
+            filename = re.match(name_pat, url).group(1)
+            pages.append({'filename': filename, 'url': url})
+        return pages
 
-    # urlfetch wrapper for manga seed page: needs this cookie to skip the adult
-    # content warning page
     def fetch_manga_seed_page(self, url):
         header = {'Cookie': 'vns_Adult=yes'}
         return urlfetch.fetch(url, headers=header).content

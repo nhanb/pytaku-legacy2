@@ -1,8 +1,28 @@
+// My app's constants (okay they're technically not constants)
+var pytaconst = {
+
+    // For chapter status
+    UNFETCHED : 0,
+    FETCHING : 1,
+    FETCHED : 2,
+
+    // For manga info status. Can's reuse the FETCH status constants because
+    // these have a different meaning:
+    //      FETCHED means "actually downloaded to dropbox"
+    //      POPULATED means "got some info to render at client side view"
+    UNPOPULATED: 3,
+    POPULATING: 4,
+    POPULATED: 5  // I like counting up. Sue me.
+};
+
 function MangaChapter(name, url) {
     var self = this;
+
     self.name = name;
     self.url = url;
     self.selected = ko.observable(false);
+
+    self.fetchStatus = ko.observable(pytaconst.UNFETCHED);
 
     self.toggle = function() {
         if (self.selected()) {
@@ -10,7 +30,7 @@ function MangaChapter(name, url) {
         } else {
             self.selected(true);
         }
-    }
+    };
 }
 
 function MangaTitle(name, url, thumbUrl) {
@@ -34,7 +54,7 @@ function MangaTitle(name, url, thumbUrl) {
 
     self.initStatus = ko.observable(0);
 
-    // ---------------- Using Pytaku REST API: fetch Manga data ------------
+    // ---------------- Using Pytaku REST API: populate Manga data -----------
 
     self.init = function() {
         if (self.initStatus() == 0) {
@@ -65,9 +85,57 @@ function MangaTitle(name, url, thumbUrl) {
         }
         self.chapters.valueHasMutated();
     }
+
+    // ---------- Using Pytaku REST API: fetch certain chapter ------------
+    self.fetchSingleChapter = function(chapter) {
+        self.fetchChapters([chapter]);
+    }
+
+    // Input is a plain array (not a Knockout observable array)
+    self.fetchChapters = function(chapterArray) {
+        var payload = [];
+
+        for (var i = 0; i < chapterArray.length; i++) {
+            var chapter = chapterArray[i];
+
+            // TODO: need some meaningful alert to user here
+            if (chapter.fetchStatus() != pytaconst.UNFETCHED) return;
+
+            payload.push({
+                name: chapter.name,
+                url: chapter.url
+            });
+        }
+
+        if (payload.length == 0) return; // Nothing to do here
+
+        var url = '/api/fetch/' + encodeURIComponent(self.name);
+
+        var authHeaders = {
+            Pytoken: apiToken,
+            Userid: userId
+        };
+
+        $.ajax(url, {
+            headers: authHeaders,
+            method: 'PUT',
+            data: JSON.stringify(payload),
+            success: function(data, textStatus, xhr) {
+                var msg = 'Fetch request successfully sent.';
+                app.pushAlert(msg, 'success');
+                console.log(data);
+            },
+            error: function(data, textStatus, xhr) {
+                chapter.fetchStatus(pytaconst.UNFETCHED);
+                var msg = 'Server error: cannnot process fetchChapters.';
+                app.pushAlert(msg, 'danger');
+            },
+
+        });
+    };
 }
 
-function AlertModel(msg, type) {
+function Alert(msg, type) {
     this.message = msg;
     this.type = typeof type !== 'undefined' ? type : 'info';
 }
@@ -100,7 +168,7 @@ function AppViewModel() {
     this.alerts = ko.observableArray([]);
 
     this.pushAlert = function(msg, type) {
-        this.alerts.push(new AlertModel(msg, type));
+        this.alerts.push(new Alert(msg, type));
     };
 
     this.removeAlert = function(al) {

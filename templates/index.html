@@ -131,7 +131,7 @@
                 <button type="button" class="btn btn-primary btn-sm"
                   data-bind="click: toggle, text: selected()? 'Deselect' : 'Select'">
                 </button>
-                <button type="button" class="btn btn-success btn-sm"
+                <button type="button" class="btn btn-success btn-sm" data-bind="click: $parent.fetchSingleChapter"
                   >Download</button>
                 <span data-bind="text: name"></span>
                 </li>
