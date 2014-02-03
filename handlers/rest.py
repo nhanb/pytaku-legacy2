@@ -62,8 +62,7 @@ class FetchHandler(webapp2.RequestHandler):
     @auth
     def put(self):
         # Sample request path: /api/fetch/Naruto/Chapter-1169
-        # params:   url (chapter seed page URL)
-        #           options (maybe add stuff later, like auto zip)
+        # body: json list of chapter objects: [ {url:..., name:...} . {}, ...]
         path = self.request.path.split('/')[1:]  # cut out empty first elem
         if len(path) <= 2:  # only ['api', 'fetch']
             return
@@ -82,9 +81,10 @@ class FetchHandler(webapp2.RequestHandler):
         for chapter in chapters:
             html = urlfetch.fetch(chapter['url']).content
             pages = s.chapter_pages(html)
+            chapter_path = path + '/' + chapter['name']
 
             # Transfer pages to dropbox
             for page in pages:
-                file_path = path + '/' + page['filename']
+                file_path = chapter_path + '/' + page['filename']
                 page_content = urlfetch.fetch(page['url']).content
-                dbx.upload(file_path, page_content, self.dbx_token)
+                dbx.async_upload(file_path, page_content, self.dbx_token)

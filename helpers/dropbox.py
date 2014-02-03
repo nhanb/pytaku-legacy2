@@ -1,6 +1,7 @@
 import ConfigParser
 import urllib
 from google.appengine.api import urlfetch
+import threading
 
 config = ConfigParser.ConfigParser()
 config.read("config.ini")
@@ -21,3 +22,7 @@ def upload(name, content, token):
     headers = {'Authorization': 'Bearer ' + token}
     resp = urlfetch.fetch(url, content, 'PUT', headers)
     return resp.content
+
+
+def async_upload(name, content, token):
+    threading.Thread(target=upload, args=(name, content, token)).start()
