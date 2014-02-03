@@ -61,27 +61,23 @@ class FetchHandler(webapp2.RequestHandler):
 
     @auth
     def put(self):
-        # body: json list of chapter objects: [ {url:..., name:...} . {}, ...]
+        # body: json object of 1 chapter: {url:..., name:...}
 
         in_payload = self.request.body
-        chapters = json.loads(in_payload)
+        chapter = json.loads(in_payload)
 
-        # Call appropriate site instance. This assumes all chapters are from
-        # the same manga page
-        s = sites.get_site(chapters[0]['url'])
+        # Call appropriate site instance
+        s = sites.get_site(chapter['url'])
 
-        # Fetch chapters one by one
-        for chapter in chapters:
+        # Path to target dropbox folder
+        path = chapter['name']
 
-            # Path to target dropbox folder
-            path = chapter['name']
+        # Pages urls and file names
+        html = urlfetch.fetch(chapter['url']).content
+        pages = s.chapter_pages(html)
 
-            # Pages urls and file names
-            html = urlfetch.fetch(chapter['url']).content
-            pages = s.chapter_pages(html)
-
-            # Transfer pages to dropbox
-            for page in pages:
-                file_path = path + '/' + page['filename']
-                page_content = urlfetch.fetch(page['url']).content
-                dbx.upload(file_path, page_content, self.dbx_token)
+        # Transfer pages to dropbox
+        for page in pages:
+            file_path = path + '/' + page['filename']
+            page_content = urlfetch.fetch(page['url']).content
+            dbx.upload(file_path, page_content, self.dbx_token)

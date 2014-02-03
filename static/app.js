@@ -92,30 +92,14 @@ function MangaTitle(name, url, thumbUrl) {
 
     // ---------- Using Pytaku REST API: fetch certain chapter(s) ------------
     self.fetchSingleChapter = function(chapter) {
-        self.fetchChapters([chapter]);
-    }
 
-    self.fetchSelected = function() {
-        self.fetchChapters(self.selectedChapters());
-    }
+        if (chapter.fetchStatus() != pytaconst.UNFETCHED) return;
+        chapter.fetchStatus(pytaconst.FETCHING);
 
-    // Input is a plain array (not a Knockout observable array)
-    self.fetchChapters = function(chapterArray) {
-        var payload = [];
-
-        for (var i = 0; i < chapterArray.length; i++) {
-            var chapter = chapterArray[i];
-
-            if (chapter.fetchStatus() != pytaconst.UNFETCHED) continue;
-            chapter.fetchStatus(pytaconst.FETCHING);
-
-            payload.push({
-                name: self.name + '/' + chapter.name,
-                url: chapter.url
-            });
-        }
-
-        if (payload.length == 0) return; // Nothing to do here
+        var payload = {
+            name: self.name + '/' + chapter.name,
+            url: chapter.url
+        };
 
         var url = '/api/fetch';
 
@@ -129,22 +113,20 @@ function MangaTitle(name, url, thumbUrl) {
             method: 'PUT',
             data: JSON.stringify(payload),
             success: function(data, textStatus, xhr) {
-                var msg = 'Fetch request successfully sent.';
-                app.pushAlert(msg, 'success');
-                console.log(data);
-                for (var i = 0; i < chapterArray.length; i++) {
-                    chapterArray[i].fetchStatus(pytaconst.FETCHED)
-                }
+                chapter.fetchStatus(pytaconst.FETCHED)
             },
             error: function(data, textStatus, xhr) {
-                var msg = 'Server error: cannnot process fetchChapters.';
-                app.pushAlert(msg, 'danger');
-                for (var i = 0; i < chapterArray.length; i++) {
-                    chapterArray[i].fetchStatus(pytaconst.UNFETCHED)
-                }
+                chapter.fetchStatus(pytaconst.UNFETCHED)
             },
         });
+    }
 
+    self.fetchSelected = function() {
+        var rawArray = self.selectedChapters();
+        size = rawArray.length;
+        for (var i = 0; i < size; i++) {
+            self.fetchSingleChapter(rawArray[i]);
+        }
     };
 }
 
