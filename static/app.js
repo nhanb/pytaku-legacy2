@@ -15,8 +15,9 @@ var pytaconst = {
     POPULATED: 5  // I like counting up. Sue me.
 };
 
-function MangaChapter(name, url) {
+function MangaChapter(name, url, parentTitle) {
     var self = this;
+    self.parentTitle = parentTitle;
 
     self.name = name;
     self.url = url;
@@ -32,8 +33,10 @@ function MangaChapter(name, url) {
 
     self.toggle = function() {
         if (self.selected()) {
+            self.parentTitle.selectedChapters.remove(self);
             self.selected(false);
         } else {
+            self.parentTitle.selectedChapters.push(self);
             self.selected(true);
         }
     };
@@ -48,14 +51,9 @@ function MangaTitle(name, url, thumbUrl) {
     self.chapters = ko.observableArray([]);
     self.tags = ko.observableArray([]);
 
+    self.selectedChapters = ko.observableArray([]);
     self.canDownloadSelected = ko.computed(function() {
-        var ch = self.chapters();
-        for (var i = 0; i < ch.length; i++) {
-            if(ch[i].selected()) {
-                return true;
-            }
-        }
-        return false;
+        return self.selectedChapters().length > 0;
     });
 
     self.initStatus = ko.observable(0);
@@ -87,14 +85,18 @@ function MangaTitle(name, url, thumbUrl) {
         var ch = info['chapters'];
         for (var i = 0; i < ch.length; i++) {
             self.chapters().push(new MangaChapter(
-                        ch[i]['title'], ch[i]['url']));
+                        ch[i]['title'], ch[i]['url'], self));
         }
         self.chapters.valueHasMutated();
     }
 
-    // ---------- Using Pytaku REST API: fetch certain chapter ------------
+    // ---------- Using Pytaku REST API: fetch certain chapter(s) ------------
     self.fetchSingleChapter = function(chapter) {
         self.fetchChapters([chapter]);
+    }
+
+    self.fetchSelected = function() {
+        self.fetchChapters(self.selectedChapters());
     }
 
     // Input is a plain array (not a Knockout observable array)
@@ -104,10 +106,8 @@ function MangaTitle(name, url, thumbUrl) {
         for (var i = 0; i < chapterArray.length; i++) {
             var chapter = chapterArray[i];
 
-            // TODO: need some meaningful alert to user here
-            if (chapter.fetchStatus() != pytaconst.UNFETCHED) return;
-
-            chapter.fetchStatus(pytaconst.FETCHING)
+            if (chapter.fetchStatus() != pytaconst.UNFETCHED) continue;
+            chapter.fetchStatus(pytaconst.FETCHING);
 
             payload.push({
                 name: self.name + '/' + chapter.name,

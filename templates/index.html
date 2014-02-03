@@ -122,7 +122,7 @@
                 Download all chapters
               </button>
               <button type="button" class="btn btn-primary"
-                data-bind="enable: canDownloadSelected"
+                data-bind="enable: canDownloadSelected, click: fetchSelected"
                 >Download selected chapters</button>
               <hr>
               <ul class="list-group" data-bind="foreach: chapters">
