@@ -23,6 +23,12 @@ function MangaChapter(name, url) {
     self.selected = ko.observable(false);
 
     self.fetchStatus = ko.observable(pytaconst.UNFETCHED);
+    self.fetching = ko.computed(function() {
+        return self.fetchStatus() === pytaconst.FETCHING;
+    });
+    self.fetched = ko.computed(function() {
+        return self.fetchStatus() === pytaconst.FETCHED;
+    });
 
     self.toggle = function() {
         if (self.selected()) {
