@@ -60,6 +60,9 @@ function MangaTitle(name, url, thumbUrl) {
     self.canDownloadSelected = ko.computed(function() {
         return self.selectedChapters().length > 0;
     });
+    self.hasChapters = ko.computed(function(){
+        return self.chapters().length > 0;
+    });
 
     self.initStatus = ko.observable(0);
 

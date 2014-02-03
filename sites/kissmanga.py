@@ -27,8 +27,7 @@ class Kissmanga(Site):
         parsed = ET.fromstring(content)
 
         return [{'title': item.text.strip(),
-                 'url': item.attrib['href'],
-                 'site': 'kissmanga'}
+                 'url': item.attrib['href']}
                 for item in parsed]
 
     # All kinds of data

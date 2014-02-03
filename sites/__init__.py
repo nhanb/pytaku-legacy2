@@ -8,7 +8,7 @@ def get_site(url):
     if parsed.netloc == 'kissmanga.com':
         import kissmanga
         return kissmanga.Kissmanga()
-    elif parsed.netloc == 'batoto.net':
+    elif parsed.netloc == 'www.batoto.net':
         import batoto
         return batoto.Batoto()
     else:

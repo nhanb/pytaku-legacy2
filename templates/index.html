@@ -118,26 +118,28 @@
 
               <img class="img-thumbnail" data-bind="attr: {src: thumbUrl}">
 
-              <h2>Chapters:</h2>
-              <button type="button" class="btn btn-primary"
-                data-bind="enable: canDownloadSelected, click: fetchSelected"
-                >Download selected</button>
-              <hr>
-              <ul class="list-group" data-bind="foreach: chapters">
+              <div data-bind="visible: 'hasChapters'">
+                <h2>Chapters:</h2>
+                <button type="button" class="btn btn-primary"
+                  data-bind="enable: canDownloadSelected, click: fetchSelected"
+                  >Download selected</button>
+                <hr>
+                <ul class="list-group" data-bind="foreach: chapters">
 
-                <li data-bind="attr: {class: selected() ? 'list-group-item list-group-item-info' : 'list-group-item'}">
-                <button type="button" class="btn btn-primary btn-sm"
-                  data-bind="click: toggle, text: selected()? 'Deselect' : 'Select'">
-                </button>
-                <button type="button" class="btn btn-success btn-sm" data-bind="click: $parent.fetchSingleChapter">
-                  <i data-bind="css: {'fa-spinner fa-spin': fetching, 'fa-check-circle': fetched}" class="fa"></i> Download</button>
-                <span data-bind="text: name"></span>
-                </li>
+                  <li data-bind="attr: {class: selected() ? 'list-group-item list-group-item-info' : 'list-group-item'}">
+                  <button type="button" class="btn btn-primary btn-sm"
+                    data-bind="click: toggle, text: selected()? 'Deselect' : 'Select'">
+                  </button>
+                  <button type="button" class="btn btn-success btn-sm" data-bind="click: $parent.fetchSingleChapter">
+                    <i data-bind="css: {'fa-spinner fa-spin': fetching, 'fa-check-circle': fetched}" class="fa"></i> Download</button>
+                  <span data-bind="text: name"></span>
+                  </li>
 
-              </ul>
-              <button type="button" class="btn btn-primary"
-                data-bind="enable: canDownloadSelected"
-                >Download selected chapters</button>
+                </ul>
+                <button type="button" class="btn btn-primary"
+                  data-bind="enable: canDownloadSelected"
+                  >Download selected chapters</button>
+              </div> <!-- /has-cbapters -->
             </div>
           </div> <!-- /panel-body -->
 
