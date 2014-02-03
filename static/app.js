@@ -101,6 +101,8 @@ function MangaTitle(name, url, thumbUrl) {
             // TODO: need some meaningful alert to user here
             if (chapter.fetchStatus() != pytaconst.UNFETCHED) return;
 
+            chapter.fetchStatus(pytaconst.FETCHING)
+
             payload.push({
                 name: chapter.name,
                 url: chapter.url
@@ -124,14 +126,19 @@ function MangaTitle(name, url, thumbUrl) {
                 var msg = 'Fetch request successfully sent.';
                 app.pushAlert(msg, 'success');
                 console.log(data);
+                for (var i = 0; i < chapterArray.length; i++) {
+                    chapterArray[i].fetchStatus(pytaconst.FETCHED)
+                }
             },
             error: function(data, textStatus, xhr) {
-                chapter.fetchStatus(pytaconst.UNFETCHED);
                 var msg = 'Server error: cannnot process fetchChapters.';
                 app.pushAlert(msg, 'danger');
+                for (var i = 0; i < chapterArray.length; i++) {
+                    chapterArray[i].fetchStatus(pytaconst.UNFETCHED)
+                }
             },
-
         });
+
     };
 }
 

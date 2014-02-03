@@ -87,4 +87,4 @@ class FetchHandler(webapp2.RequestHandler):
             for page in pages:
                 file_path = chapter_path + '/' + page['filename']
                 page_content = urlfetch.fetch(page['url']).content
-                dbx.async_upload(file_path, page_content, self.dbx_token)
+                dbx.upload(file_path, page_content, self.dbx_token)
