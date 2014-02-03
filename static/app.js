@@ -104,14 +104,14 @@ function MangaTitle(name, url, thumbUrl) {
             chapter.fetchStatus(pytaconst.FETCHING)
 
             payload.push({
-                name: chapter.name,
+                name: self.name + '/' + chapter.name,
                 url: chapter.url
             });
         }
 
         if (payload.length == 0) return; // Nothing to do here
 
-        var url = '/api/fetch/' + encodeURIComponent(self.name);
+        var url = '/api/fetch';
 
         var authHeaders = {
             Pytoken: apiToken,
