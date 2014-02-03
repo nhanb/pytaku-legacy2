@@ -3,9 +3,10 @@ from google.appengine.api import urlfetch
 import re
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
+from sites import Site
 
 
-class Kissmanga(object):
+class Kissmanga(Site):
 
     # Return a list of dictionaries that store at least title and url:
     # [ { 'title': 'Naruto', 'url': 'http://...' }, {...}, ... ]
@@ -67,4 +68,4 @@ class Kissmanga(object):
 
     def fetch_manga_seed_page(self, url):
         header = {'Cookie': 'vns_Adult=yes'}
-        return urlfetch.fetch(url, headers=header).content
+        return urlfetch.fetch(url, headers=header)

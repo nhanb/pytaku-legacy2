@@ -50,7 +50,7 @@ class MangaHandler(webapp2.RequestHandler):
         url = self.request.get('url')
         s = sites.get_site(url)
 
-        html = s.fetch_manga_seed_page(url)
+        html = s.fetch_manga_seed_page(url).content
         info = s.manga_info(html)
 
         result = json.dumps(info)
