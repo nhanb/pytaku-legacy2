@@ -51,6 +51,11 @@ function MangaTitle(name, url, thumbUrl) {
     self.chapters = ko.observableArray([]);
     self.tags = ko.observableArray([]);
 
+    // Get site name from URL
+    var a = document.createElement('a');
+    a.href = self.url;
+    self.site = a.hostname.replace('www\.', '');
+
     self.selectedChapters = ko.observableArray([]);
     self.canDownloadSelected = ko.computed(function() {
         return self.selectedChapters().length > 0;
@@ -217,7 +222,8 @@ function AppViewModel() {
         self.titles([]);
 
         for (var i = 0; i < ar.length ; i++) {
-            self.titles.push(new MangaTitle(ar[i]['title'], ar[i]['url']));
+            title = ar[i];
+            self.titles.push(new MangaTitle(title['title'], title['url']));
         }
     }
 }

@@ -8,13 +8,17 @@ def get_site(url):
     if parsed.netloc == 'kissmanga.com':
         import kissmanga
         return kissmanga.Kissmanga()
+    elif parsed.netloc == 'batoto.net':
+        import batoto
+        return batoto.Batoto()
     else:
         return None
 
 
 def available_sites(options):
     import kissmanga
-    return [kissmanga.Kissmanga()]
+    import batoto
+    return [kissmanga.Kissmanga(), batoto.Batoto()]
 
 
 # Return whole html string of the fetched url, return None if failed
