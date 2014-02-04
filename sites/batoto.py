@@ -78,15 +78,11 @@ class Batoto(Site):
         pages_htmls = [html]
         urls = urls[1:]
 
-        headers = {
-            'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
-        }
-
         for url in urls:
             resp_code = 404
             tries = 0
             while resp_code != 200 and tries < 77:
-                resp = urlfetch.fetch(url, headers=headers)
+                resp = urlfetch.fetch(url)
                 resp_code = resp.status_code
                 tries += 1
             pages_htmls.append(resp.content)
