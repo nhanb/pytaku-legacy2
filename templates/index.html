@@ -118,7 +118,17 @@
 
               <img class="img-thumbnail" data-bind="attr: {src: thumbUrl}">
 
-              <div data-bind="visible: 'hasChapters'">
+              <div data-bind="if: !hasChapters()" class="col col-md-8 col-md-offset-2">
+                <h3>Busted!</h3>
+                <p>
+                  Looks like this manga has no chapter. It is most likely that
+                  the site (<strong><span data-bind="text: site"></span></strong>)
+                  has taken the chapters down due to copyright issues.
+                  Try another site!
+                </p>
+              </div>
+
+              <div data-bind="visible: hasChapters">
                 <h2>Chapters:</h2>
                 <button type="button" class="btn btn-primary"
                   data-bind="enable: canDownloadSelected, click: fetchSelected"
@@ -139,7 +149,7 @@
                 <button type="button" class="btn btn-primary"
                   data-bind="enable: canDownloadSelected"
                   >Download selected chapters</button>
-              </div> <!-- /has-cbapters -->
+              </div> <!-- /has-chapters -->
             </div>
           </div> <!-- /panel-body -->
 
