@@ -77,26 +77,24 @@ class Batoto(Site):
         # so let's save ourselves an http request
         pages_htmls = [html]
         urls = urls[1:]
+
         rpcs = []
-
         for url in urls:
-            #resp_code = 404
-            #tries = 0
-
             # Make async calls
             rpc = urlfetch.create_rpc()
             urlfetch.make_fetch_call(rpc, url)
-            rpcs.append(rpc)
-
-            #while resp_code != 200 and tries < 77:
-                #resp = urlfetch.fetch(url)
-                #resp_code = resp.status_code
-                #tries += 1
+            rpcs.append((rpc, url))
 
         # Get finished requests
-        for rpc in rpcs:
+        for rpc, url in rpcs:
             resp = rpc.get_result()
-            pages_htmls.append(resp.content)
+            if resp.status_code == 200:
+                pages_htmls.append(resp.content)
+            else:
+                # Failed => retry:
+                new_rpc = urlfetch.create_rpc()
+                urlfetch.make_fetch_call(new_rpc, url)
+                rpcs.append((new_rpc, url))
 
         returns = []
         for page_html in pages_htmls:
