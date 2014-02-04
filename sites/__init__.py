@@ -41,7 +41,7 @@ class Site:
         return urlfetch.fetch(url)
 
     def fetch_chapter_seed_page(self, url):
-        return self.fetch_manga_seed_page(url)
+        return urlfetch.fetch(url)
 
     def fetch_page_image(self, url):
-        return self.fetch_manga_seed_page(url)
+        return urlfetch.fetch(url)

@@ -3,7 +3,6 @@ from handlers.auth import Otaku
 import sites
 import json
 import helpers.dropbox as dbx
-from google.appengine.api import urlfetch
 
 
 # Decorator: check user credentials before executing real function
@@ -73,7 +72,7 @@ class FetchHandler(webapp2.RequestHandler):
         path = chapter['name']
 
         # Pages urls and file names
-        html = urlfetch.fetch(chapter['url']).content
+        html = s.fetch_manga_seed_page(chapter['url']).content
         pages = s.chapter_pages(html)
 
         # Transfer pages to dropbox
@@ -82,7 +81,7 @@ class FetchHandler(webapp2.RequestHandler):
             resp_code = 404
             i = 0
             while resp_code != 200 and i < 77:
-                resp = urlfetch.fetch(page['url'])
+                resp = s.fetch_page_image(page['url'])
                 resp_code = resp.status_code
                 i += 1
             page_content = resp.content
