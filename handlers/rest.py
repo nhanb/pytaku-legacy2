@@ -76,6 +76,7 @@ class FetchHandler(webapp2.RequestHandler):
         pages = s.chapter_pages(html)
 
         # Transfer pages to dropbox
+        dropbox_rpcs = []
         for page in pages:
             file_path = path + '/' + page['filename']
             resp_code = 404
@@ -85,4 +86,15 @@ class FetchHandler(webapp2.RequestHandler):
                 resp_code = resp.status_code
                 i += 1
             page_content = resp.content
-            dbx.upload(file_path, page_content, self.dbx_token)
+            dropbox_rpcs.append(dbx.upload(file_path, page_content,
+                                           self.dbx_token))
+
+        # Wait for all rpcs to finish
+        for rpc, name, content in dropbox_rpcs:
+            resp = rpc.get_result()
+
+            # Retry later if request failed
+            if resp.status_code != 200:
+                dropbox_rpcs.append(dbx.upload(name, content, self.dbx_token))
+
+        self.response.write(len(dropbox_rpcs))

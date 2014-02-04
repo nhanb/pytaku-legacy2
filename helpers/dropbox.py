@@ -22,8 +22,11 @@ def upload(name, content, token):
                          urllib.pathname2url(name),
                          urllib.urlencode(params))
     headers = {'Authorization': 'Bearer ' + token}
-    resp = urlfetch.fetch(url, content, 'PUT', headers)
-    return resp.content
+
+    # Make async call, returns whole rpc object
+    rpc = urlfetch.create_rpc()
+    urlfetch.make_fetch_call(rpc, url, content, 'PUT', headers)
+    return (rpc, name, content)
 
 
 def async_upload(name, content, token):
