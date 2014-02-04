@@ -78,16 +78,15 @@ class FetchHandler(webapp2.RequestHandler):
         # Transfer pages to dropbox
         dropbox_rpcs = []
         for page in pages:
-            file_path = path + '/' + page['filename']
-            resp_code = 404
-            i = 0
-            while resp_code != 200 and i < 77:
-                resp = s.fetch_page_image(page['url'])
-                resp_code = resp.status_code
-                i += 1
-            page_content = resp.content
-            dropbox_rpcs.append(dbx.upload(file_path, page_content,
-                                           self.dbx_token))
+            resp = s.fetch_page_image(page['url'])
+            if resp.status_code != 200:
+                # If request failed, append it to the end to try again later
+                pages.append(page)
+            else:
+                file_path = path + '/' + page['filename']
+                page_content = resp.content
+                dropbox_rpcs.append(dbx.upload(file_path, page_content,
+                                               self.dbx_token))
 
         # Wait for all rpcs to finish
         for rpc, name, content in dropbox_rpcs:
