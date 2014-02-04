@@ -42,29 +42,36 @@ class Batoto(Site):
                 'tags': tags}
 
     def _chapters(self, soup):
-        table = soup.find('table', class_='chapters_list')
-        en_rows = table.findAll(u'tr', class_=u'lang_English')
+        try:
+            table = soup.find('table', class_='chapters_list')
+            en_rows = table.find_all('tr', class_='lang_English')
 
-        chapters = []
-        for row in en_rows:
-            a = row.find('a')
-            url = a['href']
-            title = a.contents[1].strip()
-            chapters.append({
-                'title': title,
-                'url': url
-            })
-        return chapters
+            chapters = []
+            for row in en_rows:
+                a = row.find('a')
+                url = a['href']
+                title = a.contents[1].strip()
+                chapters.append({
+                    'title': title,
+                    'url': url
+                })
+            return chapters
+
+        except AttributeError:
+            return []
 
     def _thumbnail_url_and_tags(self, soup):
-        box = soup.find('div', class_='ipsBox')
-        thumb = box.find('img')['src']
+        try:
+            box = soup.find('div', class_='ipsBox')
+            thumb = box.find('img')['src']
 
-        # This cell stores <a> that store tags
-        tags_cell = box.find('td', text='Genres:').find_next_sibling('td')
-        tags = [a.find('span').contents[1].lower() for a in tags_cell]
+            # This cell stores <a> that store tags
+            tags_cell = box.find('td', text='Genres:').find_next_sibling('td')
+            tags = [a.find('span').contents[1].lower() for a in tags_cell]
 
-        return (thumb, tags)
+            return (thumb, tags)
+        except:
+            return ([], [])
 
     def chapter_pages(self, html):
         soup = BeautifulSoup(html)
