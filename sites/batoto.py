@@ -65,3 +65,39 @@ class Batoto(Site):
         tags = [a.find('span').contents[1].lower() for a in tags_cell]
 
         return (thumb, tags)
+
+    def chapter_pages(self, html):
+        soup = BeautifulSoup(html)
+
+        # a <select> tag has options that each points to a page
+        opts = soup.find('select', id='page_select').find_all('option')
+        urls = [opt['value'] for opt in opts]
+
+        # Page 1 has already been fetched (stored in this html param, duh!)
+        # so let's save ourselves an http request
+        pages_htmls = [html]
+        urls = urls[1:]
+
+        headers = {
+            'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
+        }
+
+        for url in urls:
+            resp_code = 404
+            tries = 0
+            while resp_code != 200 and tries < 77:
+                resp = urlfetch.fetch(url, headers=headers)
+                resp_code = resp.status_code
+                tries += 1
+            pages_htmls.append(resp.content)
+
+        returns = []
+        for page_html in pages_htmls:
+            soup = BeautifulSoup(page_html)
+            img_url = soup.find('img', id='comic_page')['src']
+            filename = img_url.split('/')[-1]
+            returns.append({
+                'filename': filename,
+                'url': img_url
+            })
+        return returns
