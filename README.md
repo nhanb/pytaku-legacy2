@@ -1,8 +1,10 @@
-# Pytaku [![Build Status](https://travis-ci.org/nhanb/pytaku.png)](https://travis-ci.org/nhanb/pytaku)
+# Pytaku [![Build Status](https://travis-ci.org/nhanb/pytaku.png)](https://travis-ci.org/nhanb/pytaku)  
+https://pytaku.appspot.com
 
 Manga fetcher for otaku on the go
 
-[to be updated]
+This project is currently in an unstable stage and under active development. Full documentation
+will be provided when all the scaffolding has been finalized.
 
 ## Development environment setup
 
